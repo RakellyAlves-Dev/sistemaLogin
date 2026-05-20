@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Cloud Console - Security</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-app: #fafafa;
+            --sidebar-bg: #111111;
+            --sidebar-text: #888888;
+            --sidebar-text-active: #ffffff;
+            --panel-bg: #ffffff;
+            --text-title: #0a0a0a;
+            --text-body: #444444;
+            --text-muted: #666666;
+            --border-subtle: #eaeaea;
+            --badge-success-bg: #e6f4ea;
+            --badge-success-text: #137333;
+            --btn-danger-hover: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.01em; }
+        body { background-color: var(--bg-app); color: var(--text-title); display: flex; min-height: 100vh; }
+
+        /* SIDEBAR COMPONENTS */
+        .sidebar { width: 280px; background-color: var(--sidebar-bg); display: flex; flex-direction: column; padding: 32px 24px; position: fixed; height: 100vh; }
+        .brand-container { display: flex; align-items: center; gap: 12px; margin-bottom: 48px; padding-left: 8px; }
+        .brand-logo { background: linear-gradient(135deg, #6366f1, #4f46e5); width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; color: white; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .brand-name { font-size: 1.1rem; font-weight: 700; color: #ffffff; }
+        .navigation-menu { list-style: none; display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
+        .menu-item-link { display: flex; align-items: center; gap: 12px; padding: 12px 16px; text-decoration: none; color: var(--sidebar-text); font-size: 0.9rem; font-weight: 500; border-radius: 8px; transition: all 0.2s ease; }
+        .menu-item-link:hover, .menu-item-link.active { color: var(--sidebar-text-active); background-color: rgba(255, 255, 255, 0.05); }
+        .action-logout { background: transparent; border: 1px solid rgba(255, 255, 255, 0.15); color: #ffffff; padding: 14px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.2s ease; margin-top: auto; }
+        .action-logout:hover { background-color: var(--btn-danger-hover); border-color: var(--btn-danger-hover); }
+
+        /* WORKSPACE */
+        .workspace-wrapper { margin-left: 280px; flex-grow: 1; padding: 48px 64px; max-width: 1400px; animation: appEntry 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .workspace-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 24px; }
+        .workspace-title-area h1 { font-size: 2rem; font-weight: 700; }
+        .workspace-title-area p { font-size: 0.95rem; color: var(--text-muted); margin-top: 4px; }
+
+        .security-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .card-panel { background: var(--panel-bg); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 28px; }
+        .card-panel h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .card-panel p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; }
+
+        .token-box { font-family: monospace; background: #f4f4f5; padding: 12px 16px; border-radius: 6px; font-size: 0.85rem; border: 1px solid var(--border-subtle); word-break: break-all; color: #27272a; }
+        
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 600; background: var(--badge-success-bg); color: var(--badge-success-text); }
+
+        @keyframes appEntry { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="brand-container">
+            <div class="brand-logo"><i class="fa-solid fa-cube"></i></div>
+            <span class="brand-name">Apex Core</span>
+        </div>
+       <nav class="navigation-menu">
+            <li><a href="dashboard.html" class="menu-item-link"><i class="fa-solid fa-layer-group"></i> Overview</a></li>
+            <li><a href="security.html" class="menu-item-link active"><i class="fa-solid fa-shield-halved"></i> Security Controls</a></li>
+            <li><a href="logs.html" class="menu-item-link"><i class="fa-solid fa-terminal"></i> API Logs</a></li>
+            <li><a href="preferences.html" class="menu-item-link"><i class="fa-solid fa-sliders"></i> Preferences</a></li>
+        </nav>
+        <button id="btnLogout" class="action-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Terminate Session</button>
+    </aside>
+
+    <main class="workspace-wrapper">
+        <header class="workspace-header">
+            <div class="workspace-title-area">
+                <h1>Security Controls</h1>
+                <p>Monitoramento e chaves de criptografia da infraestrutura.</p>
+            </div>
+        </header>
+
+        <div class="security-grid">
+            <div class="card-panel">
+                <h3><i class="fa-solid fa-key" style="color: #4f46e5;"></i> Seu Token JWT Ativo</h3>
+                <p>Utilizado para assinar digitalmente suas requisições HTTP.</p>
+                <div id="jwtTokenDisplay" class="token-box">Nenhum token detectado.</div>
+            </div>
+
+            <div class="card-panel">
+                <h3><i class="fa-solid fa-server" style="color: #10b981;"></i> Status do Firewall</h3>
+                <p>Verificação de integridade dos nós da rede de dados corporativa.</p>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div>Status Global: <span class="badge">Operacional</span></div>
+                    <div>Criptografia Base: <span class="token-box" style="padding: 2px 6px;">HMAC-SHA256</span></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const token = localStorage.getItem('@SistemaAuth:token');
+        if (!token) { window.location.href = 'index.html'; }
+        else { document.getElementById('jwtTokenDisplay').innerText = token; }
+
+        document.getElementById('btnLogout').addEventListener('click', () => {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
