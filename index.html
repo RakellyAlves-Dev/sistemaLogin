@@ -227,7 +227,8 @@
             const msgEl = document.getElementById('mensagemFeedBack');
 
             try {
-                const resposta = await fetch('http://localhost:3000/api/auth/login', {
+                // Procure por http://localhost:3000/api/auth/login e mude para:
+                         const resposta = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, senha })
